@@ -25,6 +25,7 @@ def get_config(k):
     print "config %s is %s" % (k, v)
     return v
 
+
 def get_mongo_db(env_name):
 
     db = None
@@ -44,19 +45,10 @@ def get_mongo_db(env_name):
     return db
 
 
-def execute_query(db, qname):
-    query = query_list[qname]
-    # so = query['sort']
-    # print "so", type(so)
-
+def _execute_find_query(db, query):
     q = query['q']
     proj = query.get('proj', None)
     proj['_id'] = 0
-    #if proj:   # add some other defaults only if something is set, otherwise everything
-    #    proj['_id'] = 0
-    #    proj['event'] = 1
-    #    proj['ts'] = 1
-    #    proj['app:client_ver'] = 1
 
     s = query.get('sort', ['ts', -1])
     limit = query.get('limit', 1000)
@@ -71,6 +63,49 @@ def execute_query(db, qname):
 
     data = [r for r in cursor]
     return data
+
+
+def _execute_aggregate_query(db, query):
+    """
+        'desc': 'Soft currency per player',
+        'type': 'aggregate',
+        'q': {
+            'match': {"event": "cashflow", "currency": "HARD"},
+            'group': {"_id": "$username", "total": {"$sum": "$amount"}}
+        }
+    """
+
+    q = query['q']
+    result = db.metrics.aggregate([
+        {"$match": q['match']},
+        {"$group": q['group']}
+    ])
+
+    #print(cursor)
+
+    #s = query.get('sort', ['ts', -1])
+    #if s:
+    #    cursor.sort(*s)
+
+    #limit = query.get('limit', 1000)
+    #if limit:
+    #    cursor.limit(limit)
+
+    return result['result']
+
+
+def execute_query(db, qname):
+    #TODO: Aggregate support. Example:
+    # db.players.aggregate( { $match: {"deck:max_slots": 4}}, {$group: {_id: "$username", total: { $sum: "$wallet:SOFT"}}})
+    query = query_list[qname]
+    # so = query['sort']
+    # print "so", type(so)
+    query_type = query.get('type', 'find')
+
+    if 'find' == query_type:
+        return _execute_find_query(db, query)
+    elif 'aggregate' == query_type:
+        return _execute_aggregate_query(db, query)
 
 
 def json_encoder(obj):

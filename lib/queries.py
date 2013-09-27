@@ -20,6 +20,12 @@ tutorial_match_day  = {'event': 'Tutorial', 'ts': tstoday }
 
 query_list = {
 
+    'test': {
+        'desc': "test query",
+        'q':  {'event': 'Tutorial'},
+        'proj': {"player:uid":1, "ts":1 }
+    },
+
     'tutorial': {
         'desc': "Tutorial query",
         'q':  {'event': 'Tutorial'},
@@ -94,7 +100,18 @@ query_list = {
         'q':  {'event': 'boost', 'ts': {"$gte": datetime.utcnow()-timedelta(days=1)}},
         'proj'  : {'ts':1, 'deck:full_pct': 1},
         'sort'  : ['ts', -1]
+    },
+
+    
+    'cashflow-diamonds': {
+        'desc': 'hard currency per player',
+        'type': 'aggregate',
+        'q': {
+            'match': {"event": "cashflow", "currency": "HARD"},
+            'group': {"_id": "$username", "total": {"$sum": "$amount"}}
+        }
     }
+
 
     #'quest-not-won': {
     #    'q':  {'event': 'quest:end', 'quest:won': None},
