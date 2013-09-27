@@ -102,19 +102,21 @@ query_list = {
         'sort'  : ['ts', -1]
     },
 
+    'soft-day-list': {
+        'desc': "soft currency today",
+        'q':  {'event': 'cashflow', 'ts': tstoday},
+        'proj': {'type':1, 'amount': 1, 'ltv:soft':1, 'balance': 1 },
+        # 'proj'  : {"player:name":1, 'amount':1 },
+        'sort'  : ['ts', -1]
+    },
     
-    'cashflow-diamonds': {
-        'desc': 'hard currency per player',
+    'soft-day-player': {
+        'desc': 'soft spend per player',
         'type': 'aggregate',
         'q': {
-            'match': {"event": "cashflow", "currency": "HARD"},
-            'group': {"_id": "$username", "total": {"$sum": "$amount"}}
+            'match': {"event": "cashflow", "currency": "SOFT", 'ts': tstoday },
+            'group': {"_id": "$player:name", "total": {"$sum": "$amount"}}
         }
     }
 
-
-    #'quest-not-won': {
-    #    'q':  {'event': 'quest:end', 'quest:won': None},
-    #    'proj': {'quest:cname': 1, 'player:username': 1, 'app:client_ver': 1}
-    #}
 }
