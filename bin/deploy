@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+## check remotes are set
+# git remote -v
+# if not set with
+# heroku git:remote -a murmuring-sierra-4927
+
+git push heroku master
+
+
+heroku open &
+heroku logs --tail

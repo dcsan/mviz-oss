@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+# requires a .env file with DB settings
+
+foreman start -p 5010 -e conf/.env
