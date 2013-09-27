@@ -113,21 +113,28 @@ def json_encoder(obj):
         return obj.isoformat().split('.')[0]
 
 
-def to_csv(data, delim=",", output=sys.stdout):
-    writer = csv.writer(output, delimiter=delim)
-
-    writer.writerow(data[0].keys())
+# Might be better to use proj to get keys, that way it's always consistent
+# As it's written, the output will only have the set of all columns
+# that are present.
+def get_all_keys(data):
+    """Get all keys from json data file"""
+    all_keys = set(data[0].keys())
     for row in data:
-        # print row.keys()
-        # print row.values()
-        # if c == 0:
-        #     # first row
-        #     output.writerow(row.keys() )
-        #     c += 1
-        writer.writerow(row.values())
-    # out.writerow(data)
-    # print(json.dumps(data, default=json_encoder, sort_keys=True, indent=4, separators=(',', ': ')))
-    return output
+        all_keys = set.union(all_keys, set(row.keys()))
+    return list(all_keys)
+
+
+def to_csv(data, delim=","):
+    """docstring for to_csv"""
+    output = csv.writer(sys.stdout, delimiter=delim)
+    allKeys = get_all_keys(data)
+    output.writerow(allKeys)
+    for row in data:
+        vs = []
+        for k in allKeys:
+            vs.append(row.get(k, None))
+        output.writerow(vs)
+
 
 
 def to_json(data):
