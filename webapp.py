@@ -16,7 +16,7 @@ def hello():
 @app.route('/env')
 def get_env():
     vars = {}
-    for k in ['MONGOVIZ_PORT', 'MONGOVIZ_HOST', 'MONGOVIZ_ENV']:
+    for k in ['MONGOVIZ_PORT', 'MONGOVIZ_HOST', 'MONGOVIZ_DEV_MONGO_URI']:
         vars[k] = mongolog.get_config(k)
     return "env: %s" % json.dumps(vars)
 
@@ -51,6 +51,7 @@ if '__main__' == __name__:
     port = 5010
     # port=int(mongolog.get_config('port'))    
     print ("starting on port: %s" % port)
+    print ("MONGOVIZ_API_KEY: %s" % mongolog.get_config('MONGOVIZ_API_KEY') )
     # app.run(host=config.get('server:main', 'host'), port=int(config.get('server:main', 'port')), debug=True)
     app.run(host=host, port=port, debug=True)
 

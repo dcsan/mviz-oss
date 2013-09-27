@@ -1,0 +1,16 @@
+
+# edit below and then source this file
+
+heroku git:remote -a git@heroku.com:APPP-1234.git
+
+# check remoted
+git remote -v
+
+# run this once to setup heroku environment vars
+# these only need to be set once per app
+heroku config:set MONGOVIZ_DEV_MONGO_URI=mongodb://heroku:XXX@yy.mongohq.com:123/app1234567
+heroku config:set MONGOVIZ_STAG_MONGO_URI=mongodb://heroku:XXX@yy.mongohq.com:123/app1234567
+heroku config:set MONGOVIZ_PROD_MONGO_URI=mongodb://heroku:XXX@yy.mongohq.com:123/app1234567
+heroku config:set MONGOVIZ_API_KEY=xxxxxxxx
+heroku config:set MONGOVIZ_HOST=127.0.0.1
+heroku config:set MONGOVIZ_PORT=5010

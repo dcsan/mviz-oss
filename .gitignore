@@ -1,9 +1,8 @@
 *.py[cod]
 
-confx
+bin/setup/heroku.sh
+bin/setup/local.sh
 
-conf/install
-conf/local.env
 conf/settings.ini
 data/*
 

@@ -1,0 +1,11 @@
+
+## source this file, dont run it
+
+## setup local env
+export MONGOVIZ_DEV_MONGO_URI=mongodb://heroku:XXX@yy.mongohq.com:123/app1234567
+export MONGOVIZ_STAG_MONGO_URI=mongodb://heroku:XXX@yy.mongohq.com:123/app1234567
+export MONGOVIZ_PROD_MONGO_URI=mongodb://heroku:XXX@yy.mongohq.com:123/app1234567
+export MONGOVIZ_API_KEY=xxxxxxx
+export MONGOVIZ_HOST=127.0.0.1
+export MONGOVIZ_PORT=5010
+
