@@ -16,7 +16,7 @@ def hello():
 @app.route('/env')
 def get_env():
     vars = {}
-    for k in ['MONGOVIZ_PORT', 'MONGOVIZ_HOST', 'MONGOVIZ_DEV_MONGO_URI']:
+    for k in ['MONGOVIZ_PORT', 'MONGOVIZ_HOST']:
         vars[k] = mongolog.get_config(k)
     return "env: %s" % json.dumps(vars)
 
